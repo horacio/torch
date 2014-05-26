@@ -1,4 +1,4 @@
-torch
+Torch
 =====
 
-Code snippets in Markdown to JPEG
+Convert code samples in Markdown to JPEG.
