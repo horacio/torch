@@ -1,4 +1,5 @@
 require 'coderay'
+require 'imgkit'
 require 'redcarpet'
 require 'sinatra/base'
 
@@ -6,18 +7,33 @@ module Torch
   module Web
     class Output < Sinatra::Base
       get '/' do
-        snippet = Torch.generate_snippet %q{
-          ```ruby
-          puts 'Hey, I am totally syntax highlighted!'
-          ```
+        Torch.generate_snippet %q{
+          class Greeting
+            def hello
+              puts 'opa'
+            end
+          end
         }
+        send_file 'snippet.jpeg'
       end
+    end
+  end
+
+  class Highlight < Redcarpet::Render::HTML
+    def block_code(code, language)
+      CodeRay.scan(code, :ruby).div
     end
   end
 
   def self.generate_snippet(text)
     @@parser ||= configure_markdown_parser
-    @@parser.render(text)
+    snippet = @@parser.render(text)
+    persist_as_jpeg! snippet
+  end
+
+  def persist_as_jpeg!(snippet)
+    image = IMGKit.new(snippet).to_img(:jpeg)
+    File.write('snippet.jpeg', image)
   end
 
   def configure_markdown_parser
@@ -31,12 +47,5 @@ module Torch
     @@parser = Redcarpet::Markdown.new(renderer, options)
   end
 
-  class Highlight < Redcarpet::Render::HTML
-    def block_code(code, language)
-      result = CodeRay.scan(code, language)
-      result.div
-    end
-  end
-
-  module_function :configure_markdown_parser
+  module_function :configure_markdown_parser, :persist_as_jpeg!
 end
