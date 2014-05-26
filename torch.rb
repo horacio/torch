@@ -28,7 +28,7 @@ module Torch
   def self.generate_snippet(text)
     @@parser ||= configure_markdown_parser
     snippet = @@parser.render(text)
-    persist_as_jpeg! snippet
+    persist_as_jpeg!(snippet)
   end
 
   def persist_as_jpeg!(snippet)
