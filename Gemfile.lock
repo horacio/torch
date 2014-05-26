@@ -4,6 +4,7 @@ GEM
     coderay (1.0.9)
     daemons (1.1.9)
     eventmachine (1.0.3)
+    imgkit (1.4.1)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -23,6 +24,7 @@ PLATFORMS
 
 DEPENDENCIES
   coderay (~> 1.0.7)
+  imgkit
   redcarpet (~> 2.1.1)
   sinatra
   thin
